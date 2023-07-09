@@ -1,0 +1,11 @@
+.model-content-wrapper{
+    padding: 1rem;
+}
+
+.model-content-wrapper textarea{
+    width: 300px;
+    height: 300px;
+    min-width: 100%;
+    max-width: 100%;
+    max-height: 200px;
+}

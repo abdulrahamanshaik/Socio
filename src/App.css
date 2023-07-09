@@ -1,0 +1,28 @@
+
+body{
+  margin: 0;
+  padding: 0;
+  background-color: rgb(253, 245, 237);/*D1E6FF*/
+}
+.span-text{
+  color: black;
+  font-weight: bold;
+}
+.navbar{
+  background-color: #1976D2;
+  height: 200px;
+  margin: 0;
+  padding: 0;
+}
+
+.main{
+  height: 85vh;
+  margin-top: 2rem;
+  display: flex;
+}
+
+@media (max-width: 767px) {
+  .main {
+    flex-direction: column; /* Apply flex-direction: column on screens up to 767px wide */
+  }
+}

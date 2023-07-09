@@ -1,0 +1,27 @@
+.posts{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: 100%;
+    width: 40%;
+    overflow-y: scroll;
+    padding: 0 1rem;
+  }
+
+  .posts::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .posts {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+
+  @media (max-width: 767px) {
+    .posts{
+      
+      width: 80%;
+      margin: 1rem ;
+    }
+  }

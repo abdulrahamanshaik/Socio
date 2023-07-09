@@ -1,0 +1,41 @@
+.leftBar{
+    min-width: 12%;
+    background-color: #fff;
+    margin: 0 2rem;
+    padding: 1rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1),
+    0 8px 10px rgba(0, 0, 0, 0.1);
+}
+.leftBar .item{
+    display: flex;
+    align-items: center;
+    /* justify-content: flex-start; */
+    margin: 1rem;
+}
+.item img{
+    width: 30px;
+    margin-right: 8px;
+}
+.item span{
+    font-size: 16px;
+    font-weight: 500;
+}
+
+@media (max-width: 767px) {
+    .leftBar {
+        display: flex;
+        overflow-x: scroll;
+        margin-bottom: 2rem;
+    }
+
+    .leftBar::-webkit-scrollbar {
+        display: none;
+      }
+      
+      /* Hide scrollbar for IE, Edge and Firefox */
+      .leftBar {
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
+      }
+  }
