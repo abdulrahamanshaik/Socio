@@ -7,11 +7,15 @@ import { v4 as uuidv4 } from "uuid";
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "../../config/firebase";
 
+import CircularProgress from "@mui/material/CircularProgress";
+
 const UploadComponent = ({ closeModel, desc }) => {
   const fileInputRef = useRef(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewURL, setPreviewURL] = useState("");
   const [cleared, setCleared] = useState(false);
+
+  const [isUploading, setIsuploading] = useState(false);
 
   const handleButtonClick = () => {
     fileInputRef.current.click();
@@ -48,6 +52,7 @@ const UploadComponent = ({ closeModel, desc }) => {
   //   };
 
   const handleUpload = () => {
+    setIsuploading(true);
     const collectionRef = collection(db, "Posts");
 
     const fileRef = ref(storage, `postMedia/${selectedFile.name}_${uuidv4()}`);
@@ -58,14 +63,14 @@ const UploadComponent = ({ closeModel, desc }) => {
             const userName = JSON.parse(localStorage.getItem("user"));
             const currentDate = new Date();
             const options = {
-                weekday: 'long', // Full weekday name (e.g., Monday)
-                year: 'numeric', // 4-digit year
-                month: 'long', // Full month name (e.g., January)
-                day: 'numeric', // Day of the month (e.g., 1, 2, 3)
-                hour: 'numeric', // Hour in 24-hour format (e.g., 13, 14, 15)
-                minute: 'numeric', // Minute (e.g., 30, 45)
-              };
-              const formattedDate = currentDate.toLocaleString('en-US', options);
+              weekday: "long", // Full weekday name (e.g., Monday)
+              year: "numeric", // 4-digit year
+              month: "long", // Full month name (e.g., January)
+              day: "numeric", // Day of the month (e.g., 1, 2, 3)
+              hour: "numeric", // Hour in 24-hour format (e.g., 13, 14, 15)
+              minute: "numeric", // Minute (e.g., 30, 45)
+            };
+            const formattedDate = currentDate.toLocaleString("en-US", options);
             addDoc(collectionRef, {
               type: selectedFile.type,
               url: url,
@@ -77,7 +82,8 @@ const UploadComponent = ({ closeModel, desc }) => {
               comments: 0,
             }).then((res) => {
               closeModel();
-              alert("Upload successful");
+              // alert("Upload successful");
+              setIsuploading(false);
             });
           })
           .catch((error) => {
@@ -120,7 +126,7 @@ const UploadComponent = ({ closeModel, desc }) => {
             Clear File
           </div>
           <div className="custom-button" onClick={handleUpload}>
-            Upload
+            {isUploading ? <CircularProgress /> : "Upload"}
           </div>
         </div>
       )}

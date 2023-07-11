@@ -26,3 +26,11 @@ body{
     flex-direction: column; /* Apply flex-direction: column on screens up to 767px wide */
   }
 }
+
+
+.loader-wrapper{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
