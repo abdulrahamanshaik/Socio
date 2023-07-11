@@ -25,7 +25,7 @@ const Profile = () => {
     localStorage.removeItem("isLoggedIn");
     localStorage.removeItem("user");
     setUserData([]);
-  }
+  };
 
   useEffect(() => {
     setIsLoggedIn(localStorage.getItem("isLoggedIn"));
@@ -38,15 +38,18 @@ const Profile = () => {
       {!isLoggedIn ? (
         <button onClick={signIn}>SignIn With Google</button>
       ) : (
-
         <div className="profile-details">
-        <img className="userProfilePic" src={userData.photoURL} alt={userData.displayName} />
-        <h1>{userData.displayName}</h1>
-        <div className="profile-buttons-wrapper">
-        <SimpleDialogDemo/>
+          <img
+            className="userProfilePic"
+            src={userData.photoURL}
+            alt={userData.displayName}
+          />
+          <h1>{userData.displayName}</h1>
+          <div className="profile-buttons-wrapper">
+            <SimpleDialogDemo />
             {/* <button >Post Socio</button> */}
-            <button onClick={logOut}>LogOut</button>
-        </div>
+            <button onClick={logOut}>LOGOUT</button>
+          </div>
         </div>
       )}
     </div>

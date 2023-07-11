@@ -5,36 +5,22 @@ import TurnedInNotOutlinedIcon from "@mui/icons-material/TurnedInNotOutlined";
 import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import VolumeOffIcon from "@mui/icons-material/VolumeOff";
-// import ReplayIcon from "@mui/icons-material/Replay";
-
-
-// import { formatDistanceToNow,parse } from 'date-fns';
-
-
-
-
-
-
-
 
 import PauseIcon from "@mui/icons-material/Pause";
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-// import VolumeMuteIcon from "@mui/icons-material/VolumeMute";
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import "./index.css";
 
 import ReactPlayer from "react-player";
 import { useState } from "react";
 
+import { useInView } from "react-cool-inview";
+
 const Post = ({ post }) => {
   const [isMuted, setIsMuted] = useState(true);
   const [isPlaying, setIsPlaying] = useState(true);
 
-  // const dateString = post.date;
-  // const date = parse(dateString, "EEEE, MMMM d, yyyy 'at' h:mm a", new Date());
-  // const timeAgo = formatDistanceToNow(date);
+  const { observe, inView } = useInView();
 
-
-  
   return (
     <div className="post">
       <div className="user-details-wrapper">
@@ -54,15 +40,16 @@ const Post = ({ post }) => {
         {post.type.includes("image") ? (
           <img className="post-image" src={post.url} alt="" />
         ) : (
-          <div className="video-container">
+          <div className="video-container" ref={observe}>
             <ReactPlayer
               className="video-player"
               url={post.url}
-              playing={isPlaying}
+              playing={inView && isPlaying}
               muted={isMuted}
               // controls
               // loop
               width={"100%"}
+              height={"100%"}
               onEnded={() => setIsPlaying(false)}
             />
             <div className="video-controls">
@@ -78,7 +65,7 @@ const Post = ({ post }) => {
                 />
               )}
 
-              {isPlaying? (
+              {isPlaying ? (
                 <PauseIcon
                   onClick={() => setIsPlaying(!isPlaying)}
                   className="playToggle"
@@ -89,25 +76,28 @@ const Post = ({ post }) => {
                   className="playToggle"
                 />
               )}
-              
-
-
             </div>
           </div>
         )}
       </div>
       <div className="post-interactions">
-        <FavoriteBorderIcon />
-        <p>{post.likes} Likes</p>
+        <div className="interaction-wrappers">
+          <FavoriteBorderIcon />
+          <span>{post.likes} Likes</span>
+        </div>
+        <div className="interaction-wrappers">
+          <ForumOutlinedIcon />
+          <span>{post.comments} Comments</span>
+        </div>
 
-        <ForumOutlinedIcon />
-        <p>{post.comments} Comments</p>
-
-        <ShareOutlinedIcon />
-        <p>Shares</p>
-
-        <TurnedInNotOutlinedIcon />
-        <p>Save</p>
+        <div className="interaction-wrappers">
+          <ShareOutlinedIcon />
+          <span>Share</span>
+        </div>
+        <div className="interaction-wrappers">
+          <TurnedInNotOutlinedIcon />
+          <span>Save</span>
+        </div>
       </div>
     </div>
   );
