@@ -10,6 +10,8 @@ import "./index.css";
 import { useState, useEffect } from "react";
 
 const Posts = () => {
+  const [isMuted, setIsMuted] = useState(true);
+
   // console.log(AllPosts);
   const [postsList, setPostsList] = useState([]);
   const collectionRef = collection(db, "Posts");
@@ -35,7 +37,14 @@ const Posts = () => {
         console.log(post);
         // const user = Users.find((user) => user.id === post.userId);
 
-        return <Post post={post} key={post.id} />;
+        return (
+          <Post
+            post={post}
+            key={post.id}
+            isMuted={isMuted}
+            setIsMuted={setIsMuted}
+          />
+        );
         // user={user}
       })}
     </div>

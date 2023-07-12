@@ -15,8 +15,7 @@ import { useState } from "react";
 
 import { useInView } from "react-cool-inview";
 
-const Post = ({ post }) => {
-  const [isMuted, setIsMuted] = useState(true);
+const Post = ({ post, isMuted, setIsMuted }) => {
   const [isPlaying, setIsPlaying] = useState(true);
 
   const { observe, inView } = useInView();

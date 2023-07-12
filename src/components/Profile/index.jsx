@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
-import { collection, addDoc,getDocs } from "firebase/firestore";
+import { collection, addDoc, getDocs } from "firebase/firestore";
 import { db } from "../../config/firebase";
+
+import CircularProgress from "@mui/material/CircularProgress";
 
 import "./index.css";
 import { auth, provider } from "../../config/firebase";
@@ -12,7 +14,6 @@ const Profile = () => {
   const [userData, setUserData] = useState([]);
   const [usersList, setUsersList] = useState([]);
   const collectionRef = collection(db, "Users");
-
 
   const signIn = () => {
     signInWithPopup(auth, provider)
@@ -31,15 +32,17 @@ const Profile = () => {
         };
         const formattedDate = currentDate.toLocaleString("en-US", options);
         addDoc(collectionRef, {
-         Name:data.user.displayName,
-         Email:data.user.email,
-         Date:formattedDate,
-         Profilepic:data.user.photoURL,
-         Userid:data.user.uid,
-        }).then((res) => {
-          alert('Login Successful')
-          console.log(res);
-        }).catch((err)=>console.error(err))
+          Name: data.user.displayName,
+          Email: data.user.email,
+          Date: formattedDate,
+          Profilepic: data.user.photoURL,
+          Userid: data.user.uid,
+        })
+          .then((res) => {
+            alert("Login Successful");
+            console.log(res);
+          })
+          .catch((err) => console.error(err));
       })
       .catch((err) => console.error(err));
   };
@@ -56,13 +59,11 @@ const Profile = () => {
     setUserData(JSON.parse(localStorage.getItem("user")));
     // console.log(userData);
 
-      const getPosts = async () => {
-        const dataList = await getDocs(collectionRef);
-        setUsersList(dataList.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-      };
-      getPosts();
-
-
+    const getPosts = async () => {
+      const dataList = await getDocs(collectionRef);
+      setUsersList(dataList.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    };
+    getPosts();
   }, []);
 
   return (
@@ -83,23 +84,28 @@ const Profile = () => {
             <button onClick={logOut}>LOGOUT</button>
           </div>
           <p className="all-users-text">All Users</p>
-          <div className="all-users">
-            {usersList.map((user) => {
-              return (
-                <div className="all-users-item" key={user.id}>
-                  <img
-            className="userProfilePic"
-            src={user.Profilepic}
-                    alt={user.Name}
-                  />
-                  <div className="all-users-details">
-                  <span>{user.Name}</span>
-                  <span>{user.Date}</span>
+
+          {usersList.length < 1 ? (
+            <CircularProgress />
+          ) : (
+            <div className="all-users">
+              {usersList.map((user) => {
+                return (
+                  <div className="all-users-item" key={user.id}>
+                    <img
+                      className="userProfilePic"
+                      src={user.Profilepic}
+                      alt={user.Name}
+                    />
+                    <div className="all-users-details">
+                      <span>{user.Name}</span>
+                      <span>{user.Date}</span>
+                    </div>
                   </div>
-                </div>
-              );
-            })}
-          </div>
+                );
+              })}
+            </div>
+          )}
         </div>
       )}
     </div>
