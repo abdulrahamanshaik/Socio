@@ -2,17 +2,33 @@
     min-width: 12%;
     background-color: #fff;
     margin: 0 2rem;
-    padding: 1rem;
+    padding:1rem 0;
     border-radius: 1rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1),
     0 8px 10px rgba(0, 0, 0, 0.1);
 }
-.leftBar .item{
+
+
+.leftBar .item {
+    cursor: pointer;
     display: flex;
     align-items: center;
-    /* justify-content: flex-start; */
-    margin: 1rem;
-}
+    padding: 1rem;
+    transition: all 0.1s ease;
+  }
+  
+  .leftBar .item:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .leftBar .item.listStyles {
+    border-left: 6px solid #000;
+    background-image: linear-gradient(to right, #fcbe12, #f5e7c0);
+  }
+  
+
+
+
 .item img{
     width: 30px;
     margin-right: 8px;

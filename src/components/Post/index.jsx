@@ -35,51 +35,51 @@ const Post = ({ post, isMuted, setIsMuted }) => {
         </div>
       </div>
       <p>{post.desc}</p>
-      <div className="post-image-wrapper">
-        {post.type.includes("image") && (
-          <img className="post-image" src={post.url} alt="" />
-        )}
-        {post.type.includes("video") && (
-          <div className="video-container" ref={observe}>
-            <ReactPlayer
-              className="video-player"
-              url={post.url}
-              playing={inView && isPlaying}
-              muted={isMuted}
-              // controls
-              // loop
-              width={"100%"}
-              height={"100%"}
-              onEnded={() => setIsPlaying(false)}
-            />
-            <div className="video-controls">
-              {isMuted ? (
-                <VolumeUpIcon
-                  onClick={() => setIsMuted(!isMuted)}
-                  className="audioToggle"
-                />
-              ) : (
-                <VolumeOffIcon
-                  onClick={() => setIsMuted(!isMuted)}
-                  className="audioToggle"
-                />
-              )}
+      {post.type !== "text" && (
+        <div className="post-image-wrapper">
+          {post.type.includes("image") && (
+            <img className="post-image" src={post.url} alt="Post Image" />
+          )}
+          {post.type.includes("video") && (
+            <div className="video-container" ref={observe}>
+              <ReactPlayer
+                className="video-player"
+                url={post.url}
+                playing={inView && isPlaying}
+                muted={isMuted}
+                width={"100%"}
+                height={"100%"}
+                onEnded={() => setIsPlaying(false)}
+              />
+              <div className="video-controls">
+                {isMuted ? (
+                  <VolumeUpIcon
+                    onClick={() => setIsMuted(!isMuted)}
+                    className="audioToggle"
+                  />
+                ) : (
+                  <VolumeOffIcon
+                    onClick={() => setIsMuted(!isMuted)}
+                    className="audioToggle"
+                  />
+                )}
 
-              {isPlaying ? (
-                <PauseIcon
-                  onClick={() => setIsPlaying(!isPlaying)}
-                  className="playToggle"
-                />
-              ) : (
-                <PlayArrowIcon
-                  onClick={() => setIsPlaying(!isPlaying)}
-                  className="playToggle"
-                />
-              )}
+                {isPlaying ? (
+                  <PauseIcon
+                    onClick={() => setIsPlaying(!isPlaying)}
+                    className="playToggle"
+                  />
+                ) : (
+                  <PlayArrowIcon
+                    onClick={() => setIsPlaying(!isPlaying)}
+                    className="playToggle"
+                  />
+                )}
+              </div>
             </div>
-          </div>
-        )}
-      </div>
+          )}
+        </div>
+      )}
       <div className="post-interactions">
         <div className="interaction-wrappers">
           <FavoriteBorderIcon />

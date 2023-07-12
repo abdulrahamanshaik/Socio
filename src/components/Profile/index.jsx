@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { collection, addDoc, getDocs } from "firebase/firestore";
+import { collection, addDoc, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../config/firebase";
 
 import CircularProgress from "@mui/material/CircularProgress";
+import Alert from "@mui/material/Alert";
 
 import "./index.css";
 import { auth, provider } from "../../config/firebase";
@@ -18,14 +19,14 @@ const Profile = () => {
   const signIn = () => {
     signInWithPopup(auth, provider)
       .then((data) => {
-        setIsLoggedIn(true);
-        setUserData(data.user);
+        const userUid = data.user.uid;
 
-        const query = collectionRef.where("Userid", "==", data.user.uid);
-        query
-          .get()
-          .then((snapshot) => {
-            if (snapshot.empty) {
+        const userQuery = query(collectionRef, where("Userid", "==", userUid));
+
+        // Execute the query
+        getDocs(userQuery)
+          .then((querySnapshot) => {
+            if (querySnapshot.empty) {
               localStorage.setItem("isLoggedIn", true);
               localStorage.setItem("user", JSON.stringify(data.user));
               const currentDate = new Date();
@@ -53,7 +54,13 @@ const Profile = () => {
                 .catch((err) => console.error(err));
             } else {
               console.log("User data already exists in Firestore.");
+              alert(`Welcome Back ${data.user.displayName}`);
             }
+
+            localStorage.setItem("isLoggedIn", true);
+            localStorage.setItem("user", JSON.stringify(data.user));
+            setIsLoggedIn(true);
+            setUserData(data.user);
           })
           .catch((error) => {
             console.error("Error querying Firestore:", error);

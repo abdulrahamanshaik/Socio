@@ -12,10 +12,13 @@ import Messages from "../../assets/10.png";
 import Tutorials from "../../assets/11.png";
 import Courses from "../../assets/12.png";
 import Fund from "../../assets/13.png";
+import { useState } from "react";
 // import { AuthContext } from "../../context/authContext";
 // import { useContext } from "react";
 
 const LeftBar = () => {
+  const [selectedItem, setSelectedItem] = useState("Friends");
+
   const allimgs = [
     { img: Friends, title: "Friends" },
     { img: Groups, title: "Groups" },
@@ -27,12 +30,20 @@ const LeftBar = () => {
     { img: Gallery, title: "Gallery" },
   ];
 
+  const clickedItem = (item) => {
+    setSelectedItem(item);
+  };
+
   //   const { currentUser } = useContext(AuthContext);
 
   return (
     <div className="leftBar">
       {allimgs.map((item) => (
-        <div className="item" key={item.title}>
+        <div
+          className={selectedItem == item.title ? "listStyles item" : "item"}
+          onClick={() => clickedItem(item.title)}
+          key={item.title}
+        >
           <img src={item.img} alt="" />
           <span>{item.title}</span>
         </div>
