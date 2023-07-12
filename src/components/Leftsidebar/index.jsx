@@ -25,30 +25,18 @@ const LeftBar = () => {
     { img: Events, title: "Events" },
     { img: Gaming, title: "Generic" },
     { img: Gallery, title: "Gallery" },
-    
   ];
 
   //   const { currentUser } = useContext(AuthContext);
 
   return (
     <div className="leftBar">
- 
-          <div className="user">
-            {/* <img
-              src={currentUser.profilePic}
-              alt=""
-            />
-            <span>{currentUser.name}</span> */}
-          </div>
-          {allimgs.map((item, i) => (
-            <>
-              <div className="item" key={i}>
-                <img src={item.img} alt="" />
-                <span>{item.title}</span>
-              </div>
-            </>
-          ))}
-      
+      {allimgs.map((item) => (
+        <div className="item" key={item.title}>
+          <img src={item.img} alt="" />
+          <span>{item.title}</span>
+        </div>
+      ))}
     </div>
   );
 };

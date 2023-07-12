@@ -52,47 +52,68 @@ const UploadComponent = ({ closeModel, desc }) => {
   //   };
 
   const handleUpload = () => {
-    setIsuploading(true);
+    const userName = JSON.parse(localStorage.getItem("user"));
     const collectionRef = collection(db, "Posts");
-
-    const fileRef = ref(storage, `postMedia/${selectedFile.name}_${uuidv4()}`);
-    uploadBytes(fileRef, selectedFile)
-      .then(() => {
-        getDownloadURL(fileRef)
-          .then((url) => {
-            const userName = JSON.parse(localStorage.getItem("user"));
-            const currentDate = new Date();
-            const options = {
-              weekday: "long", // Full weekday name (e.g., Monday)
-              year: "numeric", // 4-digit year
-              month: "long", // Full month name (e.g., January)
-              day: "numeric", // Day of the month (e.g., 1, 2, 3)
-              hour: "numeric", // Hour in 24-hour format (e.g., 13, 14, 15)
-              minute: "numeric", // Minute (e.g., 30, 45)
-            };
-            const formattedDate = currentDate.toLocaleString("en-US", options);
-            addDoc(collectionRef, {
-              type: selectedFile.type,
-              url: url,
-              desc: desc,
-              date: formattedDate,
-              userName: userName.displayName,
-              userPic: userName.photoURL,
-              likes: 0,
-              comments: 0,
-            }).then((res) => {
-              closeModel();
-              // alert("Upload successful");
-              setIsuploading(false);
+    const currentDate = new Date();
+    const options = {
+      weekday: "long", // Full weekday name (e.g., Monday)
+      year: "numeric", // 4-digit year
+      month: "long", // Full month name (e.g., January)
+      day: "numeric", // Day of the month (e.g., 1, 2, 3)
+      hour: "numeric", // Hour in 24-hour format (e.g., 13, 14, 15)
+      minute: "numeric", // Minute (e.g., 30, 45)
+    };
+    const formattedDate = currentDate.toLocaleString("en-US", options);
+    if (selectedFile) {
+      setIsuploading(true);
+      const fileRef = ref(
+        storage,
+        `postMedia/${selectedFile.name}_${uuidv4()}`
+      );
+      uploadBytes(fileRef, selectedFile)
+        .then(() => {
+          getDownloadURL(fileRef)
+            .then((url) => {
+              addDoc(collectionRef, {
+                type: selectedFile.type,
+                url: url,
+                desc: desc,
+                date: formattedDate,
+                userName: userName.displayName,
+                userPic: userName.photoURL,
+                likes: 0,
+                comments: 0,
+              }).then((res) => {
+                closeModel();
+                // alert("Upload successful");
+                setIsuploading(false);
+              });
+            })
+            .catch((error) => {
+              console.error("Error getting download URL:", error);
             });
-          })
-          .catch((error) => {
-            console.error("Error getting download URL:", error);
-          });
-      })
-      .catch((error) => {
-        console.error("Error uploading file:", error);
+        })
+        .catch((error) => {
+          console.error("Error uploading file:", error);
+        });
+    } else if (desc !== "") {
+      setIsuploading(true);
+      addDoc(collectionRef, {
+        type: "text",
+        url: "",
+        desc: desc,
+        date: formattedDate,
+        userName: userName.displayName,
+        userPic: userName.photoURL,
+        likes: 0,
+        comments: 0,
+      }).then((res) => {
+        closeModel();
+        setIsuploading(false);
       });
+    } else {
+      alert("Add Post Content");
+    }
   };
 
   return (
@@ -125,11 +146,11 @@ const UploadComponent = ({ closeModel, desc }) => {
           <div className="custom-button" onClick={handleClearFile}>
             Clear File
           </div>
-          <div className="custom-button" onClick={handleUpload}>
-            {isUploading ? <CircularProgress /> : "Upload"}
-          </div>
         </div>
       )}
+      <div className="custom-button" onClick={handleUpload}>
+        {isUploading ? <CircularProgress /> : "Post"}
+      </div>
 
       {/* {selectedFile && !cleared && (
         <button onClick={handleUpload}>Upload</button>

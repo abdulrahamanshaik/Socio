@@ -21,28 +21,43 @@ const Profile = () => {
         setIsLoggedIn(true);
         setUserData(data.user);
 
-        localStorage.setItem("isLoggedIn", true);
-        localStorage.setItem("user", JSON.stringify(data.user));
-        const currentDate = new Date();
-        const options = {
-          weekday: "long", // Full weekday name (e.g., Monday)
-          year: "numeric", // 4-digit year
-          month: "long", // Full month name (e.g., January)
-          day: "numeric", // Day of the month (e.g., 1, 2, 3)
-        };
-        const formattedDate = currentDate.toLocaleString("en-US", options);
-        addDoc(collectionRef, {
-          Name: data.user.displayName,
-          Email: data.user.email,
-          Date: formattedDate,
-          Profilepic: data.user.photoURL,
-          Userid: data.user.uid,
-        })
-          .then((res) => {
-            alert("Login Successful");
-            console.log(res);
+        const query = collectionRef.where("Userid", "==", data.user.uid);
+        query
+          .get()
+          .then((snapshot) => {
+            if (snapshot.empty) {
+              localStorage.setItem("isLoggedIn", true);
+              localStorage.setItem("user", JSON.stringify(data.user));
+              const currentDate = new Date();
+              const options = {
+                weekday: "long", // Full weekday name (e.g., Monday)
+                year: "numeric", // 4-digit year
+                month: "long", // Full month name (e.g., January)
+                day: "numeric", // Day of the month (e.g., 1, 2, 3)
+              };
+              const formattedDate = currentDate.toLocaleString(
+                "en-US",
+                options
+              );
+              addDoc(collectionRef, {
+                Name: data.user.displayName,
+                Email: data.user.email,
+                Date: formattedDate,
+                Profilepic: data.user.photoURL,
+                Userid: data.user.uid,
+              })
+                .then((res) => {
+                  alert("Login Successful");
+                  console.log(res);
+                })
+                .catch((err) => console.error(err));
+            } else {
+              console.log("User data already exists in Firestore.");
+            }
           })
-          .catch((err) => console.error(err));
+          .catch((error) => {
+            console.error("Error querying Firestore:", error);
+          });
       })
       .catch((err) => console.error(err));
   };
@@ -101,6 +116,7 @@ const Profile = () => {
                       <span>{user.Name}</span>
                       <span>{user.Date}</span>
                     </div>
+                    <button className="follow-btn">Follow</button>
                   </div>
                 );
               })}

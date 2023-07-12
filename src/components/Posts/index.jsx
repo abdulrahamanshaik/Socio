@@ -34,7 +34,7 @@ const Posts = () => {
       )}
 
       {postsList.map((post) => {
-        console.log(post);
+        // console.log(post);
         // const user = Users.find((user) => user.id === post.userId);
 
         return (

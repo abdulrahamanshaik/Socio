@@ -36,9 +36,10 @@ const Post = ({ post, isMuted, setIsMuted }) => {
       </div>
       <p>{post.desc}</p>
       <div className="post-image-wrapper">
-        {post.type.includes("image") ? (
+        {post.type.includes("image") && (
           <img className="post-image" src={post.url} alt="" />
-        ) : (
+        )}
+        {post.type.includes("video") && (
           <div className="video-container" ref={observe}>
             <ReactPlayer
               className="video-player"

@@ -9,7 +9,7 @@
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    /* flex-grow: 1; */
+    flex-grow: 1;
     /* align-self: flex-start; */
 }
 .profile-buttons-wrapper{
@@ -18,7 +18,7 @@
     justify-content: space-evenly;
 }
 .profile-wrapper button{
-    background-color: orange;
+    background-color: #fcbe12;
     color: #fff;
     border: 0;
     border-radius: 8px;
@@ -32,7 +32,7 @@
 
 .profile-buttons-wrapper button:hover{
     /* color: #000; */
-    background-color: orange;
+    background-color: #fcbe12;
 }
 
 .profile-details{
@@ -57,6 +57,8 @@
     font-weight: bold;
     /* text-align: left; */
 }
+
+
 .all-users-item{
     display: flex;
     /* justify-content: space-between; */
@@ -75,6 +77,7 @@
     font-size: 14px;
     font-weight: 700;
     justify-content: center;
+    margin-right: auto;
     
     /* align-items: center; */
 }
@@ -93,6 +96,7 @@
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
   } 
+
 
 
 /* 
